@@ -1,3 +1,4 @@
+```vue
 <template>
   <TopNav />
   <router-view
@@ -54,7 +55,7 @@ export default {
         })
         .catch(error => {
           console.log(error)
-          alert('Error occurred while fetching product')
+          alert('Failed to fetch product data')
         })
     },
     async getProducts() {
@@ -65,7 +66,7 @@ export default {
         })
         .catch(error => {
           console.log(error)
-          alert('Error occurred while fetching products')
+          alert('Failed to fetch product list')
         })
     },
     async fetchOrders() {
@@ -81,8 +82,7 @@ export default {
         })
         .catch(error => console.error(error));
     },
-    async completeOrder(orderId) {      
-      // get the order and update the status
+    async completeOrder(orderId) {
       let order = this.orders.find(order => order.orderId === orderId);
       order.status = 1;
 
@@ -98,17 +98,16 @@ export default {
       })
         .then(response => {
           if (!response.ok) {
-            alert('Error occurred while processing order')
+            alert('Failed to process order. Please try again.')
           } else {
-            alert('Order successfully processed')
-            // remove the order from the list
+            alert('Order processed successfully!')
             this.orders = this.orders.filter(order => order.orderId !== orderId);
             this.$router.go(-1);
           }
         })
         .catch(error => {
           console.log(error)
-          alert('Error occurred while processing order')
+          alert('Failed to process order. Please try again.')
         })
     }
   },
@@ -124,6 +123,8 @@ export default {
   color: #2c3e50;
   margin-top: 120px;
   padding: 1rem;
+  background-color: #f5f5f5;
+  min-height: 100vh;
 }
 
 footer {
@@ -131,7 +132,7 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #333;
+  background-color: #0046be;
   color: #fff;
   padding: 1rem;
   margin: 0;
@@ -163,6 +164,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
+  background-color: #fff;
 }
 
 th,
@@ -178,7 +180,7 @@ td {
 
 button {
   padding: 10px;
-  background-color: #005f8b;
+  background-color: #0071ce;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -187,7 +189,7 @@ button {
 }
 
 button:hover {
-  background-color: #005f8b;
+  background-color: #005bb5;
 }
 
 .action-button {
@@ -220,20 +222,6 @@ button:hover {
   margin-bottom: 10px;
 }
 
-.ai-button {
-  margin-left: 10px;
-  padding: 10px 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: #007acc;
-  color: #fff;
-  cursor: pointer;
-}
-
-.ai-button:hover {
-  background-color: #005f8b;
-}
-
 textarea {
   width: 100%;
   padding: 5px;
@@ -255,3 +243,4 @@ input {
   border: 1px solid #ccc;
 }
 </style>
+```
