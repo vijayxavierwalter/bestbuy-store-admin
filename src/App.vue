@@ -1,4 +1,3 @@
-```vue
 <template>
   <TopNav />
   <router-view
@@ -18,7 +17,7 @@ import TopNav from './components/TopNav.vue';
 
 const productServiceUrl = "/products/";
 const singleProductServiceUrl = "/product/";
-const makelineServiceUrl = "/makeline/";
+const orderServiceUrl = "/order/";
 
 export default {
   name: 'App',
@@ -70,7 +69,7 @@ export default {
         })
     },
     async fetchOrders() {
-      await fetch(`${makelineServiceUrl}order/fetch`)
+      await fetch(`${orderServiceUrl}`)
         .then(response => response.json())
         .then(data => {
           console.log(data)
@@ -89,7 +88,7 @@ export default {
       let orderObject = JSON.stringify(order)
       console.log(orderObject);
 
-      await fetch(`${makelineServiceUrl}order`, {
+      await fetch(`${orderServiceUrl}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -243,4 +242,3 @@ input {
   border: 1px solid #ccc;
 }
 </style>
-```

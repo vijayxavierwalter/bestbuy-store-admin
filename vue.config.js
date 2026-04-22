@@ -3,7 +3,7 @@ const fetch = require('node-fetch')
 const bodyParser = require('body-parser')
 
 const PRODUCT_SERVICE_URL = process.env.VUE_APP_PRODUCT_SERVICE_URL || 'http://localhost:3002/'
-const MAKELINE_SERVICE_URL = process.env.VUE_APP_MAKELINE_SERVICE_URL || 'http://localhost:3001/'
+const ORDER_SERVICE_URL = process.env.VUE_APP_ORDER_SERVICE_URL || 'http://localhost:3000/'
 
 module.exports = defineConfig({
   transpileDependencies: true,
@@ -20,16 +20,15 @@ module.exports = defineConfig({
 
       devServer.app.use(bodyParser.json())
 
-      // Health check
       devServer.app.get('/health', (_, res) => {
         const version = process.env.APP_VERSION || '0.1.0'
         res.send({ status: 'ok', version })
       })
 
-      // Get all orders
-      devServer.app.get('/makeline/order/fetch', async (_, res) => {
+      // Get all orders from order-service
+      devServer.app.get('/order', async (_, res) => {
         try {
-          const response = await fetch(`${MAKELINE_SERVICE_URL}order/fetch`)
+          const response = await fetch(ORDER_SERVICE_URL)
           const orders = await response.json()
           res.send(orders)
         } catch (error) {
@@ -38,22 +37,10 @@ module.exports = defineConfig({
         }
       })
 
-      // Get a single order by id
-      devServer.app.get('/makeline/order/:id', async (req, res) => {
+      // Update order in order-service
+      devServer.app.put('/order', async (req, res) => {
         try {
-          const response = await fetch(`${MAKELINE_SERVICE_URL}order/${req.params.id}`)
-          const order = await response.json()
-          res.send(order)
-        } catch (error) {
-          console.error(error)
-          res.status(500).send({ message: 'Failed to fetch order' })
-        }
-      })
-
-      // Manually process an order
-      devServer.app.put('/makeline/order', async (req, res) => {
-        try {
-          const response = await fetch(`${MAKELINE_SERVICE_URL}order`, {
+          const response = await fetch(ORDER_SERVICE_URL, {
             method: 'PUT',
             body: JSON.stringify(req.body),
             headers: { 'Content-Type': 'application/json' }
@@ -82,7 +69,7 @@ module.exports = defineConfig({
         }
       })
 
-      // Get a single product by id
+      // Get single product
       devServer.app.get('/product/:id', async (req, res) => {
         try {
           const response = await fetch(`${PRODUCT_SERVICE_URL}${req.params.id}`)
